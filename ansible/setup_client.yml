@@ -1,0 +1,18 @@
+# ToDo: Varialize versions with a support map
+- name: Setup OSCAP WOrkbench
+  hosts: all
+  vars:
+    required_packages:
+      - vim
+      - openscap-scanner
+  tasks:
+  - name: Setup /etc/hosts
+    lineinfile:
+      line: "{{ ansible_default_ipv4.address }}\t{{ ansible_fqdn }}"
+      regex: "^(.*){{ ansible_hostname }}(.*)$"
+      path: /etc/hosts
+
+  - name: Install Required Packages
+    package:
+      name: "{{ required_packages }}"
+      state: latest

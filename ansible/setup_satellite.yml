@@ -1,0 +1,71 @@
+# ToDo: Varialize versions with a support map
+- name: Setup Satellite/Foreman
+  hosts: all
+  vars:
+    required_packages:
+      - vim
+      - https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
+      - http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      - https://yum.theforeman.org/releases/2.1/el7/x86_64/foreman-release.rpm
+    foreman_requirements:
+      - foreman-release-scl
+    foreman_packages:
+      - foreman-installer
+    setup_foreman: false
+  tasks:
+  - name: Setup /etc/hosts
+    lineinfile:
+      line: "{{ ansible_default_ipv4.address }}\t{{ ansible_fqdn }}"
+      regex: "^(.*){{ ansible_hostname }}(.*)$"
+      path: /etc/hosts
+
+  - name: Install Required Packages
+    package:
+      name: "{{ required_packages }}"
+      state: latest
+
+  # you can't install foreman without the scl and you can't install scl without the previous repos so yes, it's supposed to be this annoying multiple install thread
+  - name: Install Foreman Requirements
+    package:
+      name: "{{ foreman_requirements }}"
+      state: latest
+
+  - name:  Install Foreman Packages
+    package:
+      name: "{{ foreman_packages }}"
+      state: latest
+
+  - name: Setup Foreman
+    shell: "foreman-installer"
+    args:
+      creates: /etc/systemd/system/foreman.service.d
+    register: foreman_install
+    when: setup_foreman | bool
+
+  - name: Get initial password
+    shell: cat /var/log/foreman-installer/foreman.log | grep 'initial_admin_password" value' | awk '{print $8}' | sed 's/"//g'
+    register: initial_password
+    when: setup_foreman | bool
+
+  - name: Get initial username
+    shell: cat /var/log/foreman-installer/foreman.log | grep 'initial_admin_username" value' | awk '{print $8}' | sed 's/"//g'
+    register: initial_username
+    when: setup_foreman | bool
+
+  - name: Collect service states
+    service_facts:
+    register: services_state
+    when: setup_foreman | bool
+
+  - name: Foreman service is not running
+    fail:
+      msg: "Foreman is not running"
+    when:
+      - setup_foreman | bool
+      - ('foreman.service' not in services_state.ansible_facts.services) or (services_state.ansible_facts.services['foreman.service'].state != 'running')
+    
+  - name: Display Satellite/Foreman Data
+    debug:
+      msg: "Username -> {{ initial_username.stdout }} Password -> {{ initial_password.stdout }} IP -> {{ ansible_default_ipv4.address }}"
+    when: setup_foreman | bool
+
