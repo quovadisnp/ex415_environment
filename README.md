@@ -23,7 +23,7 @@ path_to_private_key = "[Path to AWS private key]"
 aws_vpc_id          = "[AWS VPC ID]"
 instance_username   = "centos"
 key_name            = "ansible"
-
+```
 
 # Using Terraform libvirt
 
