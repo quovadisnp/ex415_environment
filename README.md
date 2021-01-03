@@ -48,6 +48,6 @@ key_name            = "ansible"
 # SCAP Workbench
 Launch SCAP Workbench 
 * Libvirt: `ssh -i <repo_path>/ex415_environment/terraform/libvirt/cloud.pem -X ansible@[oscap_ip] 'scap-workbench'`
-* AWS: `ssh -i <AWS key path> -X centos@[oscap_ip] 'scap-workbench'
+* AWS: `ssh -i <AWS key path> -X centos@[oscap_ip] 'scap-workbench'`
 
 # Satellite/Foreman
