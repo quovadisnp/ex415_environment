@@ -12,7 +12,7 @@
       - foreman-release-scl
     foreman_packages:
       - foreman-installer
-    setup_foreman: false
+    setup_foreman: true
   tasks:
   - name: Run base tasks
     import_tasks: base_tasks.yml
