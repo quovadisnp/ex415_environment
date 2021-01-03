@@ -16,7 +16,7 @@ resource "aws_instance" "ex415-client" {
     connection {
       host        = coalesce(self.public_ip, self.private_ip)
       type        = "ssh"
-      user        = "centos"
+      user        = var.instance_username
       private_key = file(var.path_to_private_key)
     }
   }

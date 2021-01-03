@@ -10,6 +10,19 @@ Generate study environment for Red Hat EX415 using Terraform/Ansible. This isn't
 
 Full objective list: https://www.redhat.com/en/services/training/ex415-red-hat-certified-specialist-security-linux-exam
 
+# Using AWS
+
+## Requirements
+* Create a `terraform.tfvars` file with the following information (this file is in .gitignore)   
+```
+domain              = "[fake domain name"
+aws_access_key      = "[AWS Access Key]"
+aws_secret_key      = "[AWS Secret Key]"
+aws_region          = "[AWS Region]"
+path_to_private_key = "[Path to AWS private key]"
+aws_vpc_id          = "[AWS VPC ID]"
+instance_username   = "centos"
+key_name            = "ansible"
 
 
 # Using Terraform libvirt
