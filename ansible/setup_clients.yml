@@ -4,11 +4,8 @@
   vars:
     required_packages:
       - vim
-      - scap-workbench
       - openscap-scanner
-      - "@xfce"
       - ansible
   tasks:
-    - name: Run base tasks
-      import_tasks: base_tasks.yml
-
+  - name: Run base tasks
+    import_tasks: base_tasks.yml

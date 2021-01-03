@@ -1,0 +1,16 @@
+- name: Setup /etc/hosts
+  lineinfile:
+    line: "{{ ansible_default_ipv4.address }}\t{{ ansible_fqdn }}"
+    regex: "^(.*){{ ansible_hostname }}(.*)$"
+    path: /etc/hosts
+
+- name: Install EPEL Repo
+  package:
+    name: epel-release
+    state: latest
+
+- name: Install Required Packages
+  package:
+    name: "{{ required_packages }}"
+    state: latest
+

@@ -7,22 +7,15 @@
       - https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
       - http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
       - https://yum.theforeman.org/releases/2.1/el7/x86_64/foreman-release.rpm
+      - ansible
     foreman_requirements:
       - foreman-release-scl
     foreman_packages:
       - foreman-installer
     setup_foreman: false
   tasks:
-  - name: Setup /etc/hosts
-    lineinfile:
-      line: "{{ ansible_default_ipv4.address }}\t{{ ansible_fqdn }}"
-      regex: "^(.*){{ ansible_hostname }}(.*)$"
-      path: /etc/hosts
-
-  - name: Install Required Packages
-    package:
-      name: "{{ required_packages }}"
-      state: latest
+  - name: Run base tasks
+    import_tasks: base_tasks.yml
 
   # you can't install foreman without the scl and you can't install scl without the previous repos so yes, it's supposed to be this annoying multiple install thread
   - name: Install Foreman Requirements

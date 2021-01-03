@@ -4,7 +4,7 @@ Requirements
 * Must have the Terraform libvirt plugin compiled/installed: https://github.com/dmacvicar/terraform-provider-libvirt
 
 Random Notes
-* Create `terraform.tfvars file with the following information (this file is in .gitignore):
+* Create `terraform.tfvars` file with the following information (this file is in .gitignore):
 ```
   domain              = "[fake domain name]"
   libvirt_pool        = "[an existing libvirt pool to deploy to]"
